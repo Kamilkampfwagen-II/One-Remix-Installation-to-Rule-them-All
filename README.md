@@ -1,6 +1,6 @@
 # One Remix Installation to Rule them All
 
-Install RTX Remix per game easily which you can update globally with RuneStorm's [RTX Remix Downloader](https://github.com/Kowlin/RTX-Remix-Downloader/)
+Install RTX Remix per game easily which can be updated globally using RuneStorm's [RTX Remix Downloader](https://github.com/Kowlin/RTX-Remix-Downloader/)
 This script creates symbolic links pointing to the `remix` folder created by **RTX Remix Downloader**
 
 # Setup:
