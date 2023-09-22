@@ -25,34 +25,33 @@ function Install-Remix {
       throw 'Administrator privilege required for this operation.'
    }
 
+   # Installation begins:
+   if (!(Test-Path "$GamePath/dxvk.conf")) {
+      Copy-Item -Path "$env:REMIXPATH/dxvk.conf" -Destination "$GamePath/dxvk.conf" -ErrorAction Ignore
+   }
 
-   Copy-Item -Path "$env:REMIXPATH/dxvk.conf" -Destination "$GamePath/dxvk.conf" -ErrorAction Ignore
    if ($x64) {
-
       # 64 bit installation
       Get-ChildItem -Path "$env:REMIXPATH/.trex" -Exclude 'NvRemixBridge.exe','*.log','*.dmp','*.txt','*.conf' | ForEach-Object {
          if (!(Test-Path "$GamePath/$($_.Name)")) {
             New-Item -Type SymbolicLink -Path "$GamePath/$($_.Name)" -Target $_.FullName | Out-Null
          }
       }
-
-   } else {
-
-      # 32 bit installation
-      New-Item -ItemType Directory "$GamePath/.trex" -Force | Out-Null
-      Copy-Item -Path "$env:REMIXPATH/.trex/bridge.conf" -Destination "$GamePath/.trex/bridge.conf"
-
-      Get-ChildItem -Path $env:REMIXPATH -Exclude '.trex','*.txt','*.conf' | ForEach-Object {
-         if (!(Test-Path "$GamePath/$($_.Name)")) {
-            New-Item -Type SymbolicLink -Path "$GamePath/$($_.Name)" -Target $_.FullName | Out-Null
-         }
-      }
-
-      Get-ChildItem -Path "$env:REMIXPATH/.trex" -Exclude '*.log','*.dmp','*.txt','*.conf' | ForEach-Object {
-         if (!(Test-Path "$GamePath/.trex/$($_.Name)")) {
-            New-Item -Type SymbolicLink -Path "$GamePath/.trex/$($_.Name)" -Target $_.FullName | Out-Null
-         }
-      }
-
+      return
    }
+
+   # 32 bit installation
+   New-Item -ItemType Directory "$GamePath/.trex" -Force | Out-Null
+   Copy-Item -Path "$env:REMIXPATH/.trex/bridge.conf" -Destination "$GamePath/.trex/bridge.conf"
+
+   if (!(Test-Path "$GamePath/d3d9.dll")) {
+      New-Item -Type SymbolicLink -Path "$GamePath/d3d9.dll" -Target "$env:REMIXPATH/d3d9.dll" | Out-Null
+   }
+
+   Get-ChildItem -Path "$env:REMIXPATH/.trex" -Exclude '*.log','*.dmp','*.txt','*.conf' | ForEach-Object {
+      if (!(Test-Path "$GamePath/.trex/$($_.Name)")) {
+         New-Item -Type SymbolicLink -Path "$GamePath/.trex/$($_.Name)" -Target $_.FullName | Out-Null
+      }
+   }
+
 }
