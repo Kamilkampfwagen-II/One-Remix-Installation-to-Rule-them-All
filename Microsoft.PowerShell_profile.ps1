@@ -42,7 +42,7 @@ function Install-Remix {
 
    # 32 bit installation
    New-Item -ItemType Directory "$GamePath/.trex" -Force | Out-Null
-   Copy-Item -Path "$env:REMIXPATH/.trex/bridge.conf" -Destination "$GamePath/.trex/bridge.conf"
+   Copy-Item -Path "$env:REMIXPATH/.trex/bridge.conf" -Destination "$GamePath/.trex/bridge.conf" -ErrorAction Ignore
 
    if (!(Test-Path "$GamePath/d3d9.dll")) {
       New-Item -Type SymbolicLink -Path "$GamePath/d3d9.dll" -Target "$env:REMIXPATH/d3d9.dll" | Out-Null
